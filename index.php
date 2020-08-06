@@ -12,10 +12,14 @@
 	<?php
 		require_once 'sql/conf.php';
 		if ($_COOKIE["token"]){
-			$token = $_COOKIE["token"];
-			$link = mysqli_connect($mysql_host, $mysql_user, $mysql_password, $mysql_database) or die ("<p>Ошибка соединения</p>");
-			$query = "SELECT * FROM money.users, money.tokens WHERE users.id = user_id AND token = '$token'";
-			$result = mysqli_query($link, $query);
+			function selectUser($token) {
+				$link = mysqli_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE) or die ("<h1 class='error'>Ошибка соединения</h1>");
+				$query = "SELECT * FROM money.users, money.tokens WHERE users.id = user_id AND token = '$token'";
+				$result = mysqli_query($link, $query) or die ("<h1>Ошибка запроса</h1");
+				mysqli_close($link);
+				return $result;
+			}	
+			$result = selectUser($_COOKIE['token']);		
 			if ($result) {
 				$rows = mysqli_num_rows($result);
 				if ($rows > 0) {

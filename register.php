@@ -22,9 +22,10 @@
 			if ($password == $c_password) {
 				$password = hash("sha256", $password);
 				$c_password = hash("sha256", $c_password);
-				$link = mysqli_connect($mysql_host, $mysql_user, $mysql_password, $mysql_database) or die ("<p>Ошибка соединения</p>");
+				$link = mysqli_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE) or die ("<h1 class='error'>Ошибка соединения</h1>");
 				$query = "INSERT INTO `money`.`users` (`login`, `password`) VALUES ('$login', '$password')";
 				$result = mysqli_query($link, $query);
+				mysqli_close($link);
 				if ($result) {
 					echo "<h1>Пользователь зарегистрирован</h1>";
 				} else {
