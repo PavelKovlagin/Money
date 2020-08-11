@@ -3,8 +3,10 @@
 <head>
 	<meta charset="utf-8">
 	<title>Register</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
+	<?php require 'layouts/header.php'; ?>
 	<form method="POST">
 		<p>Логин: <input type="text" name="login" placeholder="Введите пароль"></p>
 		<p>Пароль: <input type="password" name="password" placeholder="Введите пароль"></p>
@@ -12,27 +14,15 @@
 		<p><input type="submit" value="Зарегистрироваться"></p> 
 	</form>
 		<?php
-		require_once 'sql/conf.php';
+		require_once 'models/user.php';
 		echo "<h1>".$user."</h1>";
 		if ($_POST['login'] && $_POST['password'] && $_POST['c_password'])
 		{
-			$login = $_POST['login'];
-			$password = $_POST['password'];
-			$c_password = $_POST['c_password'];
-			if ($password == $c_password) {
-				$password = hash("sha256", $password);
-				$c_password = hash("sha256", $c_password);
-				$link = mysqli_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE) or die ("<h1 class='error'>Ошибка соединения</h1>");
-				$query = "INSERT INTO `money`.`users` (`login`, `password`) VALUES ('$login', '$password')";
-				$result = mysqli_query($link, $query);
-				mysqli_close($link);
-				if ($result) {
-					echo "<h1>Пользователь зарегистрирован</h1>";
-				} else {
-					echo "<h1>Ошибка регистрации</h1>";
-				}
+			$result = registerUser(htmlspecialchars($_POST['login']), htmlspecialchars($_POST['password']), htmlspecialchars($_POST['c_password']));
+			if ($result[success]) {
+				header("Location: auth.php");
 			} else {
-				echo "<p>Пароли не совпадают</p>";
+				echo "<h1 class='error'>" . $result[message] . "</h1>";
 			}
 		} else {
 			echo "<p>Не все поля заполнены</p>";
