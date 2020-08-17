@@ -31,15 +31,19 @@
 	</form>	
 <?php  
 		$money = selectUserMoney($authUser[data][0]);
-		if (count($money[data]) <= 0) {
-			echo "<h1>У вас нет денег, нищеброд</h1>";
+		if (!$money[success]) {
+			echo "<h1>".$money[message]."</h1>";
 		} else {
 			$sum = 0;
 			echo "<table border=2px>";
 			echo "<tr><td>Номинал</td><td>Количество</td></tr>";
 			foreach ($money[data] as $key => $value) {
 				$row = mysqli_fetch_row($money);
-				echo "<tr><td>" . $value[0] . "</td><td>" . $value[1] . "</td></tr>";
+				echo "<form action='controller/deleteMoney.php' method='POST'>";
+				echo "<input type='hidden' name='value' value=" . $value[0]. ">";
+				echo "<input type='hidden' name='user_id' value=" . $authUser[data][0] . ">";
+				echo "<tr><td>" . $value[0] . "</td><td>" . $value[1] . "</input></td><td><input type='submit' value='Удалить'></td></tr>";
+				echo "</form>";
 				$sum += $value[0] * $value[1];
 			}
 			echo "</table>";
