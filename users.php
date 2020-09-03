@@ -4,7 +4,8 @@ echo "<h1>Пользователи</h1>";
 require_once 'models/user.php';	
 
 $users = selectUsers();
-if (count($users[data] > 0)){
+echo var_dump($users);
+if ($users[success]){
 	echo "<table border=2px>";
 	echo "<tr><td>Логин</td><td>Пароль</td></tr>";
 	foreach ($users[data] as $key => $user) {
@@ -15,6 +16,6 @@ if (count($users[data] > 0)){
 	}
 	echo "</table>";	
 } else {
-	echo "<h1>Пользователей нет</h1>";
+	echo "<h1>" . $users[message] . "</h1>";
 }
 ?>

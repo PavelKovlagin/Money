@@ -14,10 +14,10 @@
 
 	function selectUsers() {
 		try {
-			echo "asdasda";
 			if (!$link = mysqli_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE)) return array(success=>false, message=>"Ошибка соединения");
 		 	$query = "SELECT * FROM money.users";
 		 	if (!$result = mysqli_query($link, $query)) return array(success=>false, message=>"Ошибка запроса");	
+		 	if (mysqli_num_rows($result) <= 0) return array(success=>false, message=>"Not users");
 		 	while ($row = mysqli_fetch_row($result)) {
 		 		$rows[] = $row;
 		 	}

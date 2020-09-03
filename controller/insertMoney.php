@@ -14,7 +14,7 @@
 		//echo var_dump($result);
 		header("Location: ../money.php");
 	} else {
-		$_SESSION["message"] = array(success=>false, message=>"Что то пошло не так");
+		$_SESSION["message"] = array(success=>false, message=>"Fill in the fields");
 		header("Location: ../money.php");
 	}
 ?>
